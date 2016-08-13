@@ -590,9 +590,6 @@ abstract class BaseRepository implements RepositoryInterface
 
     public function pushCriteria($request)
     {
-        // $function = $this->criterias['search'];
-        // dd($this->$function());
-
         $requestCriterias = $request->all();
 
         if (!empty($requestCriterias)) {
@@ -602,13 +599,7 @@ abstract class BaseRepository implements RepositoryInterface
                 }
             }
         }
-        // si no tiene criterios
-        //  salir
-        // si tiene criterios
-        //  por cada criterio
-        //    buscar en la lista
-        //      si existe
-        //        realizar accion de criterio
+
         return $this;
     }
 
