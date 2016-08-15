@@ -589,7 +589,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function searchCriteria($value, $requestCriterias)
     {
         if (\Schema::hasColumn($this->model->getTable(), $requestCriterias['column']) &&
-            $value && array_key_exists('column', $requestCriterias)) {
+            array_key_exists('column', $requestCriterias)) {
             $this->model = $this->model->where(strtolower($requestCriterias['column']), 'LIKE', '%'.strtolower($value).'%');
         } else {
             $this->resetModel();
