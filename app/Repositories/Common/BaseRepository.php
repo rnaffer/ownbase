@@ -126,7 +126,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function lists($column, $key = null)
     {
-        // $this->applyCriteria();
 
         return $this->model->lists($column, $key);
     }
@@ -140,7 +139,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function all($columns = ['*'])
     {
-        // $this->applyCriteria();
         $this->applyScope();
 
         if ($this->model instanceof Builder) {
@@ -165,7 +163,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function first($columns = ['*'])
     {
-        // $this->applyCriteria();
         $this->applyScope();
 
         $results = $this->model->first($columns);
@@ -186,7 +183,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function paginate($limit = null, $columns = ['*'], $method = "paginate")
     {
-        // $this->applyCriteria();
         $this->applyScope();
         $limit = is_null($limit) ? config('repository.pagination.limit', 15) : $limit;
         $results = $this->model->{$method}($limit, $columns);
@@ -219,7 +215,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function find($id, $columns = ['*'])
     {
-        // $this->applyCriteria();
         $this->applyScope();
         $model = $this->model->findOrFail($id, $columns);
         $this->resetModel();
@@ -238,7 +233,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function findByField($field, $value = null, $columns = ['*'])
     {
-        // $this->applyCriteria();
         $this->applyScope();
         $model = $this->model->where($field, '=', $value)->get($columns);
         $this->resetModel();
@@ -256,7 +250,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function findWhere(array $where, $columns = ['*'])
     {
-        // $this->applyCriteria();
         $this->applyScope();
 
         $this->applyConditions($where);
@@ -278,7 +271,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function findWhereIn($field, array $values, $columns = ['*'])
     {
-        // $this->applyCriteria();
         $model = $this->model->whereIn($field, $values)->get($columns);
         $this->resetModel();
 
@@ -296,7 +288,6 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function findWhereNotIn($field, array $values, $columns = ['*'])
     {
-        // $this->applyCriteria();
         $model = $this->model->whereNotIn($field, $values)->get($columns);
         $this->resetModel();
 
@@ -423,7 +414,7 @@ abstract class BaseRepository implements RepositoryInterface
     {
         $this->applyScope();
 
-        // $this->applyConditions($where);
+        $this->applyConditions($where);
 
         $deleted = $this->model->delete();
 
@@ -470,7 +461,7 @@ abstract class BaseRepository implements RepositoryInterface
      *
      * @return $this
      */
-    function whereHas($relation, $closure)
+    public function whereHas($relation, $closure)
     {
         $this->model = $this->model->whereHas($relation, $closure);
 
@@ -566,28 +557,14 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function parserResult($result)
     {
-        // if ($this->presenter instanceof PresenterInterface) {
-        //
-        //     if ($result instanceof Collection || $result instanceof LengthAwarePaginator) {
-        //         $result->each(function ($model) {
-        //             if ($model instanceof Presentable) {
-        //                 $model->setPresenter($this->presenter);
-        //             }
-        //
-        //             return $model;
-        //         });
-        //     } elseif ($result instanceof Presentable) {
-        //         $result = $result->setPresenter($this->presenter);
-        //     }
-        //
-        //     if (!$this->skipPresenter) {
-        //         return $this->presenter->present($result);
-        //     }
-        // }
-
         return $result;
     }
 
+    /**
+     * Push every request criteria in the Query
+     * @param  Request $request
+     * @return $this
+     */
     public function pushCriteria($request)
     {
         $requestCriterias = $request->all();
@@ -603,6 +580,12 @@ abstract class BaseRepository implements RepositoryInterface
         return $this;
     }
 
+    /**
+     * Criteria to search entities by value in column
+     * @param  string $value
+     * @param  Request $requestCriterias
+     * @return void
+     */
     public function searchCriteria($value, $requestCriterias)
     {
         if (\Schema::hasColumn($this->model->getTable(), $requestCriterias['column']) &&
@@ -613,27 +596,56 @@ abstract class BaseRepository implements RepositoryInterface
         }
     }
 
+    /**
+     * Criteria to limit the amount of entities
+     * @param  integer $value
+     * @param  Request  $requestCriterias
+     * @return void
+     */
     public function limitCriteria($value = 10, $requestCriterias = [])
     {
         $this->model = $this->model->limit($value);
 
         if (array_key_exists('offset', $requestCriterias)) {
-            $this->offsetCriteria($value != '' ? $value : 0);
+            $offset = $requestCriterias['offset'];
+            $this->offsetCriteria($offset != '' ? $offset : 0);
         }
     }
 
+    /**
+     * Criteria to offset the query
+     * @param integer $value
+     */
     public function offsetCriteria($value = 0)
     {
         $this->model = $this->model->offset($value);
     }
 
-    public function orderByCriteria($column)
+    /**
+     * Criteria to order data by given direction
+     * @param  string $column
+     * @param  Request $requestCriterias
+     * @return void
+     */
+    public function orderByCriteria($column, $requestCriterias = [])
     {
-        if ($column) {
-            $this->model = $this->model->orderBy($column, 'asc');
+        $model = $this->app->make($this->model());
+
+        if (\Schema::hasColumn($model->getTable(), $requestCriterias['orderBy'])) {
+            if (array_key_exists('direction', $requestCriterias)) {
+                $direction = $requestCriterias['direction'];
+
+                $direction = ($direction != 'asc' && $direction != 'desc') ? 'asc' : $direction;
+
+                $this->model = $this->model->orderBy($column, $direction);
+            }
         }
     }
 
+    /**
+     * Prepare the array with the posible query criterias
+     * @return void
+     */
     public function makeCriterias()
     {
         $this->criterias = [

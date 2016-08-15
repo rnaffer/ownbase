@@ -11,7 +11,7 @@
 
 ### Métodos de Repositorio Base
 
-> Extensión del BaseRepository de https://github.com/InfyOmLabs/laravel-generator - automatic!
+> Extensión del BaseRepository de https://github.com/InfyOmLabs/laravel-generator
 
 #### resetModel()
 Resetea el modelo eliminado los criterios de busqueda.
@@ -39,6 +39,72 @@ Encuentra un registro por id
 
 #### findByField(campo, valor = null, columnas = `['*']`)
 Encuentra un registro por campo y valor
+
+#### findWhere(array donde, columnas = `['*']`)
+Encuentra registros por múltiples campos
+
+#### findWhereIn(campo, array valores, columnas = `['*']`)
+Encuentra registros por múltiples valores en un campo
+
+#### findWhereNotIn(campo, array valores, columnas = `['*']`)
+Encuentra registros excluyendo múltiples valores en un campo
+
+#### create(array atributos)
+Guarda una nueva entidad en el Repositorio
+
+#### update(array atributos, id)
+Actualiza una entidad en el repositorio por id
+
+#### updateOrCreate(array atributos, array valores = [])
+Actualiza o crea una entidad en el Repositorio
+
+#### delete(id)
+Elimina una entidad del repositorio por id
+
+#### deleteWhere(array donde)
+Elimina múltiples entidades según el criterio indicado
+
+#### has(relación)
+Chequea si la entidad tiene relación
+
+#### with(aray relaciones)
+Carga las relaciones
+
+#### whereHas(relaciones, cierre)
+Carga la relación con cierre
+
+#### hidden(array campos)
+Asigna los campos ocultos
+
+#### orderBy(columna, direccion = asc)
+Ordena las entidades
+
+#### visible(array campos)
+Asigna los campos visibles
+
+#### resetScope()
+Resetea el ambito de la consulta
+
+#### applyScope()
+Aplica el ambito a la consulta Actual
+
+#### applyConditions(array donde)
+Aplica las condiciones dadas al modelo
+
+#### pushCriteria(solicitud)
+Aplica los criterios solicitados en la consulta
+
+#### searchCriteria(valor, solicitud)
+Criterio de busqueda, busca un valor en la columna indicada.
+
+#### limitCriteria(valor = 10, solicitud)
+Criterio de límite, limita la cantidad registros devueltos
+
+#### offsetCriteria(valor = 0)
+Criterio de inicio, indica desde que posición debe devolver los registros
+
+#### orderByCriteria(columna)
+Criterio de ordenación, ordena los registros según la columna indicada
 
 
 ### Criterios de consulta
