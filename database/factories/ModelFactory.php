@@ -13,17 +13,24 @@
 
 $factory->define(App\User::class, function (Faker\Generator $faker) {
     return [
-        'nombre' => $faker->name,
-        'apellido' => $faker->word,
-        'cedula' => $faker->word,
+        'name' => $faker->name,
+        'second' => $faker->word,
+        'document' => $faker->randomNumber(7),
         'email' => $faker->safeEmail,
         'password' => bcrypt(str_random(10)),
-        'direccion' => $faker->address,
-        'telefono' => $faker->phoneNumber,
-        'estatus' => $faker->boolean,
-        'rol_id' => $faker->randomDigitNotNull,
+        'address' => $faker->address,
+        'phone' => $faker->phoneNumber,
+        'status' => $faker->boolean,
+        'role_id' => $faker->numberBetween(1, 10),
         'remember_token' => str_random(10),
         'created_at' => date('Y-m-d h:i:s'),
         'updated_at' => date('Y-m-d h:i:s')
+    ];
+});
+
+$factory->define(App\Role::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->jobTitle,
+        'status' => $faker->boolean,
     ];
 });

@@ -21,7 +21,12 @@ Route::get('/home', 'HomeController@index');
 
 Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
     Route::group(['prefix' => 'v1'], function () {
+        // Users
         Route::resource('users', 'UserAPIController', ['only' => [
+            'index', 'store', 'show', 'destroy', 'update'
+        ]]);
+        // Roles
+        Route::resource('roles', 'RoleAPIController', ['only' => [
             'index', 'store', 'show', 'destroy', 'update'
         ]]);
     });

@@ -42,16 +42,16 @@ trait MakeUserTrait
         $fake = Faker::create();
 
         return array_merge([
-            'nombre' => $fake->word,
-            'apellido' => $fake->word,
-            'cedula' => $fake->word,
+            'name' => $fake->name,
+            'second' => $fake->word,
+            'document' => $fake->randomNumber(7),
             'email' => $fake->email,
             'password' => bcrypt(str_random(10)),
-            'direccion' => $fake->address,
-            'telefono' => $fake->phoneNumber,
-            'estatus' => $fake->boolean,
-            'rol_id' => $fake->randomDigitNotNull,
-            'remember_token' => $fake->word,
+            'address' => $fake->address,
+            'phone' => $fake->phoneNumber,
+            'status' => $fake->boolean,
+            'role_id' => $fake->numberBetween(1, 10),
+            'remember_token' => str_random(10),
             'created_at' => date('Y-m-d h:i:s'),
             'updated_at' => date('Y-m-d h:i:s')
         ], $userFields);
