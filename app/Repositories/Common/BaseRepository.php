@@ -93,6 +93,15 @@ abstract class BaseRepository implements RepositoryInterface
     }
 
     /**
+     * Generate a model instance
+     * @return Model
+     */
+    public function modelInstance()
+    {
+        return $this->app->make($this->model());
+    }
+
+    /**
      * Get Searchable Fields
      *
      * @return array
@@ -629,7 +638,7 @@ abstract class BaseRepository implements RepositoryInterface
      */
     public function orderByCriteria($column, $requestCriterias = [])
     {
-        $model = $this->app->make($this->model());
+        $model = $this->modelInstance();
 
         if (\Schema::hasColumn($model->getTable(), $requestCriterias['orderBy'])) {
             if (array_key_exists('direction', $requestCriterias)) {
@@ -642,6 +651,17 @@ abstract class BaseRepository implements RepositoryInterface
         }
     }
 
+    public function withCriteria($relations)
+    {
+        $model = $this->modelInstance();
+
+        if ($relations == 'full') {
+            $this->model = $this->model->with($model->getFullRelations());
+        } elseif ($relations == 'short') {
+            $this->model = $this->model->with($model->getShortRelations());
+        }
+    }
+
     /**
      * Prepare the array with the posible query criterias
      * @return void
@@ -651,7 +671,8 @@ abstract class BaseRepository implements RepositoryInterface
         $this->criterias = [
             'search' => 'searchCriteria',
             'limit'  => 'limitCriteria',
-            'orderBy' => 'orderByCriteria'
+            'orderBy' => 'orderByCriteria',
+            'with' => 'withCriteria',
         ];
     }
 }

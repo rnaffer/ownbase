@@ -13,6 +13,10 @@ class User extends Authenticatable
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    protected $shortRelations = ['role'];
+
+    protected $fullRelations = ['role'];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -37,7 +41,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'role_id'
     ];
 
     /**
@@ -59,6 +63,24 @@ class User extends Authenticatable
     public static $rules = [
 
     ];
+
+    /**
+     * full relations of the model
+     * @return array
+     */
+    public function getFullRelations()
+    {
+        return $this->fullRelations;
+    }
+
+    /**
+     * short relations of the model
+     * @return array
+     */
+    public function getShortRelations()
+    {
+        return $this->shortRelations;
+    }
 
     /**
     * Role of the user

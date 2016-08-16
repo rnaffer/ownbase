@@ -13,6 +13,9 @@ class Role extends Model
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
+    protected $shortRelations = ['users'];
+
+    protected $fullRelations = ['users'];
     /**
      * The attributes that are mass assignable.
      *
@@ -48,6 +51,24 @@ class Role extends Model
     public static $rules = [
 
     ];
+
+    /**
+     * full relations of the model
+     * @return array
+     */
+    public function getFullRelations()
+    {
+        return $this->fullRelations;
+    }
+
+    /**
+     * short relations of the model
+     * @return array
+     */
+    public function getShortRelations()
+    {
+        return $this->shortRelations;
+    }
 
     /**
     * Users that have the role
