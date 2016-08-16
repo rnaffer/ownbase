@@ -47,8 +47,8 @@ class User extends Authenticatable
      */
     protected $casts = [
         'id' => 'integer',
-        'estatus' => 'boolean',
-        'rol_id' => 'integer'
+        'status' => 'boolean',
+        'role_id' => 'integer'
     ];
 
     /**
@@ -59,4 +59,12 @@ class User extends Authenticatable
     public static $rules = [
 
     ];
+
+    /**
+    * Role of the user
+    */
+    public function role()
+    {
+        return $this->belongsTo('App\Role');
+    }
 }
