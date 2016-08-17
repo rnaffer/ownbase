@@ -38,6 +38,11 @@ abstract class BaseRepository implements RepositoryInterface
     protected $criterias = [];
 
     /**
+     * @var array
+     */
+    protected $fields = [];
+
+    /**
      * @var \Closure
      */
     protected $scopeQuery = null;
@@ -68,6 +73,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function resetModel()
     {
         $this->makeModel();
+        $this->fields = [];
     }
 
     /**
@@ -151,9 +157,9 @@ abstract class BaseRepository implements RepositoryInterface
         $this->applyScope();
 
         if ($this->model instanceof Builder) {
-            $results = $this->model->get($columns);
+            $results = $this->model->get(empty($this->fields) ? $columns : $this->fields);
         } else {
-            $results = $this->model->all($columns);
+            $results = $this->model->all(empty($this->fields) ? $columns : $this->fields);
         }
 
         $this->resetModel();
@@ -651,6 +657,11 @@ abstract class BaseRepository implements RepositoryInterface
         }
     }
 
+    /**
+     * Load relations in the data query
+     * @param  string $relations
+     * @return void
+     */
     public function withCriteria($relations)
     {
         $model = $this->modelInstance();
@@ -660,6 +671,20 @@ abstract class BaseRepository implements RepositoryInterface
         } elseif ($relations == 'short') {
             $this->model = $this->model->with($model->getShortRelations());
         }
+    }
+
+    public function fieldsCriteria($fields)
+    {
+        $model = $this->modelInstance();
+        $fields = explode(',', $fields);
+
+        foreach ($fields as $key => $field) {
+            if (! \Schema::hasColumn($model->getTable(), $field)) {
+                abort(400, $field . ' is not a valid field');
+            }
+        }
+
+        $this->fields = $fields;
     }
 
     /**
@@ -673,6 +698,7 @@ abstract class BaseRepository implements RepositoryInterface
             'limit'  => 'limitCriteria',
             'orderBy' => 'orderByCriteria',
             'with' => 'withCriteria',
+            'fields' => 'fieldsCriteria'
         ];
     }
 }
