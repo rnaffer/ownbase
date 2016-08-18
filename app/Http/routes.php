@@ -33,5 +33,9 @@ Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
         Route::resource('modules', 'ModuleAPIController', ['only' => [
             'index', 'store', 'show', 'destroy', 'update'
         ]]);
+        // Permissions
+        Route::resource('permissions', 'PermissionAPIController', ['only' => [
+            'index', 'store', 'show', 'destroy', 'update'
+        ]]);
     });
 });

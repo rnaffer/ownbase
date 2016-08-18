@@ -41,3 +41,14 @@ $factory->define(App\Module::class, function (Faker\Generator $faker) {
         'father_id' => 1,
     ];
 });
+
+$factory->define(App\Permission::class, function (Faker\Generator $faker) {
+    return [
+        'role_id' => $faker->numberBetween(1, 10),
+        'module_id' => $faker->numberBetween(1, 4),
+        'addon' => $faker->boolean,
+        'edit' => $faker->boolean,
+        'see' => $faker->boolean,
+        'disable' => $faker->boolean
+    ];
+});
