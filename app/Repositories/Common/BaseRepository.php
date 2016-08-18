@@ -607,7 +607,7 @@ abstract class BaseRepository implements RepositoryInterface
             array_key_exists('column', $requestCriterias)) {
             $this->model = $this->model->where(strtolower($requestCriterias['column']), 'LIKE', '%'.strtolower($value).'%');
         } else {
-            $this->resetModel();
+            abort(400, $requestCriterias['column'] . ' Is not a valid column');
         }
     }
 
@@ -654,6 +654,8 @@ abstract class BaseRepository implements RepositoryInterface
 
                 $this->model = $this->model->orderBy($column, $direction);
             }
+        } else {
+            abort(400, $requestCriterias['orderBy'] . ' is not a valid field');
         }
     }
 
