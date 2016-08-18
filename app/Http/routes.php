@@ -29,5 +29,9 @@ Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
         Route::resource('roles', 'RoleAPIController', ['only' => [
             'index', 'store', 'show', 'destroy', 'update'
         ]]);
+        // Modules
+        Route::resource('modules', 'ModuleAPIController', ['only' => [
+            'index', 'store', 'show', 'destroy', 'update'
+        ]]);
     });
 });

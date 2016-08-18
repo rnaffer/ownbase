@@ -2,20 +2,17 @@
 
 namespace App;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Module extends Model
 {
-    use SoftDeletes;
+    public $table = 'modules';
 
-    public $table = 'users';
+    protected $dates = ['created_at', 'updated_at'];
 
-    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+    protected $shortRelations = ['permissions'];
 
-    protected $shortRelations = ['role'];
-
-    protected $fullRelations = ['role'];
+    protected $fullRelations = ['permissions'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,16 +20,7 @@ class User extends Authenticatable
      * @var array
      */
     public $fillable = [
-        'name',
-        'second',
-        'document',
-        'email',
-        'password',
-        'address',
-        'phone',
-        'status',
-        'role_id',
-        'remember_token'
+        'title', 'father_id'
     ];
 
     /**
@@ -41,7 +29,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+
     ];
 
     /**
@@ -50,9 +38,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $casts = [
-        'id' => 'integer',
-        'status' => 'boolean',
-        'role_id' => 'integer'
+        'id' => 'integer'
     ];
 
     /**
@@ -80,13 +66,5 @@ class User extends Authenticatable
     public function getShortRelations()
     {
         return $this->shortRelations;
-    }
-
-    /**
-    * Role of the user
-    */
-    public function role()
-    {
-        return $this->belongsTo('App\Role');
     }
 }

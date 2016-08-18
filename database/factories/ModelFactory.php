@@ -34,3 +34,10 @@ $factory->define(App\Role::class, function (Faker\Generator $faker) {
         'status' => $faker->boolean,
     ];
 });
+
+$factory->define(App\Module::class, function (Faker\Generator $faker) {
+    return [
+        'title' => $faker->word,
+        'father_id' => 1,
+    ];
+});
