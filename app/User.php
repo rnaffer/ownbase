@@ -15,7 +15,7 @@ class User extends Authenticatable
 
     protected $shortRelations = ['role'];
 
-    protected $fullRelations = ['role'];
+    protected $fullRelations = ['role.permissions'];
 
     /**
      * The attributes that are mass assignable.
