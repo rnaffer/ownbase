@@ -16,7 +16,9 @@ class UserTableSeeder extends Seeder
             'name' => 'Big',
             'second' => 'Boss',
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('123qazzxc')
+            'password' => bcrypt('123qazzxc'),
+            'status' => 1,
+            'role_id' => 1
         ]);
     }
 }

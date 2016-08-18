@@ -55,10 +55,10 @@ class ModuleAPIController extends Controller
      * @return Response
      *
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         /** @var Module $module */
-        $module = $this->moduleRepository->find($id);
+        $module = $this->moduleRepository->pushCriteria($request)->find($id);
 
         if (empty($module)) {
             return response('Module not found', 404);

@@ -55,10 +55,10 @@ class UserAPIController extends Controller
      * @return Response
      *
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         /** @var User $user */
-        $user = $this->userRepository->find($id);
+        $user = $this->userRepository->pushCriteria($request)->find($id);
 
         if (empty($user)) {
             return response('User not found', 404);

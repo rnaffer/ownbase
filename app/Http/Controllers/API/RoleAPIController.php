@@ -55,10 +55,10 @@ class RoleAPIController extends Controller
      * @return Response
      *
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
         /** @var Role $role */
-        $role = $this->roleRepository->find($id);
+        $role = $this->roleRepository->pushCriteria($request)->find($id);
 
         if (empty($role)) {
             return response('Role not found', 404);
