@@ -106,6 +106,11 @@ Criterio de inicio, indica desde que posición debe devolver los registros
 #### orderByCriteria(columna)
 Criterio de ordenación, ordena los registros según la columna indicada
 
+#### withCriteria(relaciones)
+Criterio de relación, devuelve el registro con la información relacionada
+
+#### fieldsCriteria(campos)
+Criterio de campos, devuelve el registro solo con los campos especificados
 
 ### Criterios de consulta
 
@@ -130,6 +135,16 @@ offset: Indica la cantidad de registros que omitirá
 Ejemplo /api/v1/users?limit=2&offset=1
 
 #### orderBy
-ordena los registros según la columna indicada de forma ascendente
+Ordena los registros según la columna indicada de forma ascendente
 
 /api/v1/users?orderBy=nombre
+
+#### with
+Adjunta información adicional de las relaciones. full: trae las relaciones completas, short: trae una versión reducida de las relaciones.
+
+/api/v1/users?with=short
+
+#### fields
+Especifica los campos que debe devolver la consulta separados por coma.
+
+/api/v1/users?fields=name,second,email,address
