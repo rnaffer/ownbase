@@ -52,3 +52,17 @@ $factory->define(App\Permission::class, function (Faker\Generator $faker) {
         'disable' => $faker->boolean
     ];
 });
+
+$factory->define(App\Company::class, function (Faker\Generator $faker) {
+    return [
+        'name' => $faker->company,
+        'identification' => $faker->randomNumber(7),
+        'address' => $faker->address,
+        'phone' => $faker->phoneNumber,
+        'cellphone' => $faker->phoneNumber,
+        'website' => $faker->domainName,
+        'email' => $faker->companyEmail,
+        'logo_url' => $faker->url,
+        'state' => $faker->boolean,
+    ];
+});
