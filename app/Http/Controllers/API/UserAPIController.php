@@ -107,4 +107,15 @@ class UserAPIController extends Controller
 
         return response()->json($id);
     }
+
+    public function current()
+    {
+        $user = \Auth::user();
+
+        if (!$user) {
+            throw new \Exception("Authentication failed. Refresh page for re-login", 401);
+        }
+
+        return response()->json($user);
+    }
 }

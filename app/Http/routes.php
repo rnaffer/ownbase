@@ -22,6 +22,8 @@ Route::get('/home', 'HomeController@index');
 Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
     Route::group(['prefix' => 'v1'], function () {
         // Users
+        Route::get('/users/current', 'UserAPIController@current')->name('currentUser');
+        
         Route::resource('users', 'UserAPIController', ['only' => [
             'index', 'store', 'show', 'destroy', 'update'
         ]]);
